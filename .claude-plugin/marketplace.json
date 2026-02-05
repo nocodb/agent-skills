@@ -16,7 +16,7 @@
         "name": "NocoDB",
         "email": "cs@nocodb.com"
       },
-      "source": ".",
+      "source": "./plugins/nc-skills",
       "category": "development"
     }
   ]
