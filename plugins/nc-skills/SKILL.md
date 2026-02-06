@@ -1,11 +1,17 @@
 ---
 name: nocodb
-description: Access and manage NocoDB databases via v3 REST API. Use for managing workspaces, bases, tables, fields, views, records, and more. Supports filtering, sorting, pagination, linked records, attachments, and team management.
+description: Access and manage NocoDB databases via REST APIs. Free plans support bases, tables, fields, records, links, filters, sorts, and attachments. Enterprise plans add workspaces, views, scripts, teams, and collaboration features.
 ---
 
-# NocoDB v3 CLI
+# NocoDB CLI
 
-Feature-complete CLI for NocoDB v3 API.
+CLI for NocoDB API.
+
+## Plan Requirements
+
+**FREE PLANS:** Base, Table, Field, Record, Link, Attachment APIs, Fiter, Sorts APIs
+
+**ENTERPRISE (self-hosted OR cloud-hosted):** Workspace, Workspace Collaboration APIs, Base Collaboration APIs, View, Script, Team, API Token APIs
 
 ## Setup
 
@@ -43,20 +49,29 @@ NOCODB_VERBOSE=1 nc field:list MyBase Users
 ## Quick Reference
 
 ```bash
+# Workspace APIs (Enterprise only)
 nc workspace:list                                   # → wabc1234xyz
+
+# Free plan APIs
 nc base:list wabc1234xyz                            # → pdef5678uvw
 nc table:list pdef5678uvw                           # → mghi9012rst
 nc field:list pdef5678uvw mghi9012rst               # → cjkl3456opq
-nc view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
 nc record:list pdef5678uvw mghi9012rst
 nc record:get pdef5678uvw mghi9012rst 31
 nc filter:list pdef5678uvw mghi9012rst vwmno7890abc
+
+# View APIs (Enterprise only: self-hosted or cloud-hosted)
+nc view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
+
+# Filter syntax help
 nc where:help
 ```
 
 ## Commands
 
 ### Workspaces
+
+**Note:** Workspace APIs and Workspace Collaboration APIs are available only with self-hosted **Enterprise** plans and cloud-hosted **Enterprise** plans.
 
 ```bash
 nc workspace:list                         # → wabc1234xyz
@@ -65,6 +80,9 @@ nc workspace:create '{"title":"New Workspace"}'
 nc workspace:update wabc1234xyz '{"title":"Renamed"}'
 nc workspace:delete wabc1234xyz
 nc workspace:members wabc1234xyz
+nc workspace:members:add wabc1234xyz '{"email":"user@example.com","roles":"workspace-creator"}'
+nc workspace:members:update wabc1234xyz '{"email":"user@example.com","roles":"workspace-viewer"}'
+nc workspace:members:remove wabc1234xyz '{"email":"user@example.com"}'
 ```
 
 ### Bases
@@ -75,6 +93,15 @@ nc base:get pdef5678uvw
 nc base:create wabc1234xyz '{"title":"New Base"}'
 nc base:update pdef5678uvw '{"title":"Renamed"}'
 nc base:delete pdef5678uvw
+```
+
+**Base Collaboration (Enterprise plans only)**
+
+```bash
+nc base:members pdef5678uvw
+nc base:members:add pdef5678uvw '{"email":"user@example.com","roles":"base-editor"}'
+nc base:members:update pdef5678uvw '{"email":"user@example.com","roles":"base-viewer"}'
+nc base:members:remove pdef5678uvw '{"email":"user@example.com"}'
 ```
 
 ### Tables
@@ -100,6 +127,8 @@ nc field:delete pdef5678uvw mghi9012rst cjkl3456opq
 Field types: SingleLineText, LongText, Number, Decimal, Currency, Percent, Email, URL, PhoneNumber, Date, DateTime, Time, SingleSelect, MultiSelect, Checkbox, Rating, Attachment, Links, User, JSON, etc.
 
 ### Views
+
+**Note:** View APIs are available only on self-hosted and cloud-hosted **Enterprise** plans.
 
 ```bash
 nc view:list pdef5678uvw mghi9012rst      # → vwmno7890abc
@@ -158,6 +187,8 @@ nc attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
 
 ### Scripts
 
+**Note:** Script APIs are available only on self-hosted and cloud-hosted **Enterprise** plans.
+
 ```bash
 nc script:list pdef5678uvw
 nc script:create pdef5678uvw '{"title":"My Script"}'
@@ -165,12 +196,16 @@ nc script:create pdef5678uvw '{"title":"My Script"}'
 
 ### Teams
 
+**Note:** Team APIs require Enterprise plans (workspace teams are Enterprise-only).
+
 ```bash
 nc team:list wabc1234xyz
 nc team:create wabc1234xyz '{"title":"Engineering"}'
 ```
 
 ### API Tokens
+
+**Note:** API Token APIs are available only with self-hosted **Enterprise** plans and cloud-hosted **Enterprise** plans.
 
 ```bash
 nc token:list

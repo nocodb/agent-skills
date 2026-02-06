@@ -486,17 +486,19 @@ sort:delete)
 # RECORDS
 #=============================================================================
 record:list)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc record:list <base> <table> [page] [size] [where] [sort] [fields] [viewId]" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc record:list <base> <table> [page] [size] [where] [sort] [fields] [viewId] [nestedPage]" >&2; exit 1; }
     _require_int "page" "${3:-}"
     _require_int "size" "${4:-}"
     _validate_where "${5:-}"
+    _require_int "nestedPage" "${9:-}"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
-    pg="${3:-1}"; sz="${4:-25}"; wh="${5:-}"; so="${6:-}"; fl="${7:-}"; vi="${8:-}"
+    pg="${3:-1}"; sz="${4:-25}"; wh="${5:-}"; so="${6:-}"; fl="${7:-}"; vi="${8:-}"; np="${9:-}"
     q="page=$pg&pageSize=$sz"
     [[ -n "$wh" ]] && q+="&where=$(_enc "$wh")"
     [[ -n "$so" ]] && q+="&sort=$(_enc "$so")"
     [[ -n "$fl" ]] && q+="&fields=$(_enc "$fl")"
     [[ -n "$vi" ]] && q+="&viewId=$vi"
+    [[ -n "$np" ]] && q+="&nestedPage=$np"
     _get "data/$b/$t/records?$q" | jq .records
     ;;
 record:get)
@@ -556,13 +558,18 @@ record:count)
 # LINKED RECORDS
 #=============================================================================
 link:list)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc link:list <base> <table> <linkField> <recordId> [page] [size]" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc link:list <base> <table> <linkField> <recordId> [page] [size] [where] [sort] [fields]" >&2; exit 1; }
     _require_nonempty "recordId" "$4"
     _require_int "page" "${5:-}"
     _require_int "size" "${6:-}"
+    _validate_where "${7:-}"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
-    pg="${5:-1}"; sz="${6:-25}"
-    _get "data/$b/$t/links/$f/$4?page=$pg&pageSize=$sz" | jq .
+    pg="${5:-1}"; sz="${6:-25}"; wh="${7:-}"; so="${8:-}"; fl="${9:-}"
+    q="page=$pg&pageSize=$sz"
+    [[ -n "$wh" ]] && q+="&where=$(_enc "$wh")"
+    [[ -n "$so" ]] && q+="&sort=$(_enc "$so")"
+    [[ -n "$fl" ]] && q+="&fields=$(_enc "$fl")"
+    _get "data/$b/$t/links/$f/$4?$q" | jq .
     ;;
 link:add)
     [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nc link:add <base> <table> <linkField> <recordId> '<ids-json>'" >&2; exit 1; }
@@ -808,60 +815,64 @@ ARGUMENT ORDER: Commands follow a hierarchical pattern:
   Most commands accept NAMES or IDs. Use IDs directly for faster execution.
   Set NOCODB_VERBOSE=1 to see resolved IDs.
 
-WORKSPACES
+WORKSPACES  (Enterprise plans only: self-hosted or cloud-hosted)
   workspace:list
   workspace:get        WORKSPACE
   workspace:create     JSON
   workspace:update     WORKSPACE  JSON
   workspace:delete     WORKSPACE
+
+WORKSPACE COLLABORATION  (self-hosted Enterprise only)
   workspace:members    WORKSPACE
   workspace:members:add/update/remove  WORKSPACE  JSON
 
-BASES  (workspace contains bases)
+BASES
   base:list    WORKSPACE
   base:get     BASE
   base:create  WORKSPACE  JSON
   base:update  BASE  JSON
   base:delete  BASE
+
+BASE COLLABORATION  (Enterprise only: self-hosted or cloud-hosted)
   base:members BASE
   base:members:add/update/remove  BASE  JSON
 
-TABLES  (base contains tables)
+TABLES
   table:list    BASE
   table:get     BASE  TABLE
   table:create  BASE  JSON
   table:update  BASE  TABLE  JSON
   table:delete  BASE  TABLE
 
-FIELDS  (table contains fields)
+FIELDS
   field:list    BASE  TABLE
   field:get     BASE  TABLE  FIELD
   field:create  BASE  TABLE  JSON
   field:update  BASE  TABLE  FIELD  JSON
   field:delete  BASE  TABLE  FIELD
 
-VIEWS  (table contains views)
+VIEWS  (Enterprise only: self-hosted or cloud-hosted)
   view:list    BASE  TABLE
   view:get     BASE  TABLE  VIEW
   view:create  BASE  TABLE  JSON
   view:update  BASE  TABLE  VIEW  JSON
   view:delete  BASE  TABLE  VIEW
 
-FILTERS  (view contains filters)
+FILTERS
   filter:list     BASE  TABLE  VIEW
   filter:create   BASE  TABLE  VIEW  JSON
   filter:replace  BASE  TABLE  VIEW  JSON
   filter:update   BASE  FILTER_ID  JSON
   filter:delete   BASE  FILTER_ID
 
-SORTS  (view contains sorts)
+SORTS
   sort:list    BASE  TABLE  VIEW
   sort:create  BASE  TABLE  VIEW  JSON
   sort:update  BASE  SORT_ID  JSON
   sort:delete  BASE  SORT_ID
 
-RECORDS  (table contains records)
-  record:list        BASE  TABLE  [PAGE] [SIZE] [WHERE] [SORT] [FIELDS] [VIEW_ID]
+RECORDS
+  record:list        BASE  TABLE  [PAGE] [SIZE] [WHERE] [SORT] [FIELDS] [VIEW_ID] [NESTED_PAGE]
   record:get         BASE  TABLE  RECORD_ID  [FIELDS]
   record:create      BASE  TABLE  JSON
   record:update      BASE  TABLE  RECORD_ID  JSON
@@ -869,8 +880,8 @@ RECORDS  (table contains records)
   record:delete      BASE  TABLE  RECORD_ID_OR_ARRAY
   record:count       BASE  TABLE  [WHERE] [VIEW_ID]
 
-LINKED RECORDS  (link field on a record)
-  link:list    BASE  TABLE  LINK_FIELD  RECORD_ID  [PAGE] [SIZE]
+LINKED RECORDS
+  link:list    BASE  TABLE  LINK_FIELD  RECORD_ID  [PAGE] [SIZE] [WHERE] [SORT] [FIELDS]
   link:add     BASE  TABLE  LINK_FIELD  RECORD_ID  JSON_ARRAY
   link:remove  BASE  TABLE  LINK_FIELD  RECORD_ID  JSON_ARRAY
 
@@ -880,14 +891,14 @@ ATTACHMENTS
 BUTTON ACTIONS
   action:trigger  BASE  TABLE  BUTTON_FIELD  RECORD_ID
 
-SCRIPTS
+SCRIPTS  (Enterprise only: self-hosted or cloud-hosted)
   script:list    BASE
   script:get     BASE  SCRIPT_ID
   script:create  BASE  JSON
   script:update  BASE  SCRIPT_ID  JSON
   script:delete  BASE  SCRIPT_ID
 
-TEAMS  (workspace contains teams)
+TEAMS  (Enterprise only: self-hosted or cloud-hosted)
   team:list    WORKSPACE
   team:get     WORKSPACE  TEAM_ID
   team:create  WORKSPACE  JSON
@@ -895,7 +906,7 @@ TEAMS  (workspace contains teams)
   team:delete  WORKSPACE  TEAM_ID
   team:members:add/update/remove  WORKSPACE  TEAM_ID  JSON
 
-API TOKENS
+API TOKENS  (Enterprise only: self-hosted or cloud-hosted)
   token:list
   token:create  JSON
   token:delete  TOKEN_ID
@@ -920,12 +931,14 @@ EXAMPLES
 
   # Records (BASE_ID TABLE_ID ...)
   nc record:list pdef5678uvw mghi9012rst 1 50 "(Status,eq,active)"
+  nc record:list pdef5678uvw mghi9012rst 1 50 "" "" "Name,Email" "" 2  # with fields and nestedPage
   nc record:get pdef5678uvw mghi9012rst 31
   nc record:create pdef5678uvw mghi9012rst '{"fields":{"Name":"Alice"}}'
   nc record:update pdef5678uvw mghi9012rst 31 '{"Status":"done"}'
   nc record:delete pdef5678uvw mghi9012rst 31
 
-  # Linked records (BASE_ID TABLE_ID FIELD_ID RECORD_ID JSON)
+  # Linked records (BASE_ID TABLE_ID FIELD_ID RECORD_ID [PAGE] [SIZE] [WHERE] [SORT] [FIELDS])
+  nc link:list pdef5678uvw mghi9012rst cjkl3456opq 31 1 25 "(Status,eq,active)" "-CreatedAt" "Name,Email"
   nc link:add pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
 
   # View filters/sorts (BASE_ID TABLE_ID VIEW_ID JSON)
