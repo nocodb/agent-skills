@@ -1,11 +1,27 @@
 ---
 name: nocodb
 description: Access and manage NocoDB databases via REST APIs. Free plans support bases, tables, fields, records, links, filters, sorts, and attachments. Enterprise plans add workspaces, views, scripts, teams, and collaboration features.
+metadata:
+  openclaw:
+    requires:
+      env:
+        - NOCODB_TOKEN
+        - NOCODB_URL
+        - NOCODB_VERBOSE
+      bins:
+        - curl
+        - jq
+    primaryEnv: NOCODB_TOKEN
 ---
 
 # NocoDB CLI
 
 CLI for NocoDB API.
+
+## Platform Support
+
+- **Linux / macOS**: `scripts/nocodb.sh` (Bash, requires `curl` and `jq`)
+- **Windows**: `scripts/nocodb.ps1` (PowerShell 5.1+, no external dependencies)
 
 ## Plan Requirements
 
