@@ -21,7 +21,6 @@ CLI for NocoDB API.
 ## Platform Support
 
 - **Linux / macOS**: `scripts/nocodb.sh` (Bash, requires `curl` and `jq`)
-- **Windows**: `scripts/nocodb.ps1` (PowerShell 5.1+, no external dependencies)
 
 ## Plan Requirements
 
