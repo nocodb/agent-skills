@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ###############################################################################
-# nc - NocoDB v3 CLI
+# nocodb.sh - NocoDB v3 CLI
 ###############################################################################
 set -euo pipefail
 
@@ -254,39 +254,39 @@ workspace:list)
     _get meta/workspaces | jq -r '.list[]|[.title,.id]|@tsv'
     ;;
 workspace:get)
-    [[ -z "${1:-}" ]] && { echo "usage: nc workspace:get <workspace>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh workspace:get <workspace>" >&2; exit 1; }
     _get "meta/workspaces/$(_ws "$1")" | jq .
     ;;
 workspace:create)
-    [[ -z "${1:-}" ]] && { echo "usage: nc workspace:create '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh workspace:create '<json>'" >&2; exit 1; }
     _validate_workspace_json "$1" "create"
     _post meta/workspaces "$1" | jq .
     ;;
 workspace:update)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc workspace:update <workspace> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh workspace:update <workspace> '<json>'" >&2; exit 1; }
     _validate_workspace_json "$2" "update"
     _patch "meta/workspaces/$(_ws "$1")" "$2" | jq .
     ;;
 workspace:delete)
-    [[ -z "${1:-}" ]] && { echo "usage: nc workspace:delete <workspace>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh workspace:delete <workspace>" >&2; exit 1; }
     _delete "meta/workspaces/$(_ws "$1")" | jq .
     ;;
 workspace:members)
-    [[ -z "${1:-}" ]] && { echo "usage: nc workspace:members <workspace>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh workspace:members <workspace>" >&2; exit 1; }
     _get "meta/workspaces/$(_ws "$1")?include[]=members" | jq .members
     ;;
 workspace:members:add)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc workspace:members:add <workspace> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh workspace:members:add <workspace> '<json>'" >&2; exit 1; }
     _validate_members_json "$2"
     _post "meta/workspaces/$(_ws "$1")/members" "$2" | jq .
     ;;
 workspace:members:update)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc workspace:members:update <workspace> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh workspace:members:update <workspace> '<json>'" >&2; exit 1; }
     _validate_members_json "$2"
     _patch "meta/workspaces/$(_ws "$1")/members" "$2" | jq .
     ;;
 workspace:members:remove)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc workspace:members:remove <workspace> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh workspace:members:remove <workspace> '<json>'" >&2; exit 1; }
     _validate_members_json "$2"
     _delete "meta/workspaces/$(_ws "$1")/members" "$2" | jq .
     ;;
@@ -295,43 +295,43 @@ workspace:members:remove)
 # BASES
 #=============================================================================
 base:list)
-    [[ -z "${1:-}" ]] && { echo "usage: nc base:list <workspace>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh base:list <workspace>" >&2; exit 1; }
     _get "meta/workspaces/$(_ws "$1")/bases" | jq -r '.list[]|[.title,.id]|@tsv'
     ;;
 base:get)
-    [[ -z "${1:-}" ]] && { echo "usage: nc base:get <base>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh base:get <base>" >&2; exit 1; }
     _get "meta/bases/$(_base "$1")" | jq .
     ;;
 base:create)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc base:create <workspace> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh base:create <workspace> '<json>'" >&2; exit 1; }
     _validate_base_json "$2" "create"
     _post "meta/workspaces/$(_ws "$1")/bases" "$2" | jq .
     ;;
 base:update)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc base:update <base> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh base:update <base> '<json>'" >&2; exit 1; }
     _validate_base_json "$2" "update"
     _patch "meta/bases/$(_base "$1")" "$2" | jq .
     ;;
 base:delete)
-    [[ -z "${1:-}" ]] && { echo "usage: nc base:delete <base>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh base:delete <base>" >&2; exit 1; }
     _delete "meta/bases/$(_base "$1")" | jq .
     ;;
 base:members)
-    [[ -z "${1:-}" ]] && { echo "usage: nc base:members <base>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh base:members <base>" >&2; exit 1; }
     _get "meta/bases/$(_base "$1")?include[]=members" | jq .members
     ;;
 base:members:add)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc base:members:add <base> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh base:members:add <base> '<json>'" >&2; exit 1; }
     _validate_members_json "$2"
     _post "meta/bases/$(_base "$1")/members" "$2" | jq .
     ;;
 base:members:update)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc base:members:update <base> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh base:members:update <base> '<json>'" >&2; exit 1; }
     _validate_members_json "$2"
     _patch "meta/bases/$(_base "$1")/members" "$2" | jq .
     ;;
 base:members:remove)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc base:members:remove <base> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh base:members:remove <base> '<json>'" >&2; exit 1; }
     _validate_members_json "$2"
     _delete "meta/bases/$(_base "$1")/members" "$2" | jq .
     ;;
@@ -340,28 +340,28 @@ base:members:remove)
 # TABLES
 #=============================================================================
 table:list)
-    [[ -z "${1:-}" ]] && { echo "usage: nc table:list <base>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh table:list <base>" >&2; exit 1; }
     b=$(_base "$1")
     _get "meta/bases/$b/tables" | jq -r '.list[]|[.title,.id]|@tsv'
     ;;
 table:get)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc table:get <base> <table>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh table:get <base> <table>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _get "meta/bases/$b/tables/$t" | jq .
     ;;
 table:create)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc table:create <base> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh table:create <base> '<json>'" >&2; exit 1; }
     _validate_table_json "$2" "create"
     _post "meta/bases/$(_base "$1")/tables" "$2" | jq .
     ;;
 table:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc table:update <base> <table> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh table:update <base> <table> '<json>'" >&2; exit 1; }
     _validate_table_json "$3" "update"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _patch "meta/bases/$b/tables/$t" "$3" | jq .
     ;;
 table:delete)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc table:delete <base> <table>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh table:delete <base> <table>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _delete "meta/bases/$b/tables/$t" | jq .
     ;;
@@ -370,29 +370,29 @@ table:delete)
 # FIELDS
 #=============================================================================
 field:list)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc field:list <base> <table>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh field:list <base> <table>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _get "meta/bases/$b/tables/$t" | jq -r '.fields[]|[.title,.type,.id]|@tsv'
     ;;
 field:get)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc field:get <base> <table> <field>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh field:get <base> <table> <field>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
     _get "meta/bases/$b/fields/$f" | jq .
     ;;
 field:create)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc field:create <base> <table> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh field:create <base> <table> '<json>'" >&2; exit 1; }
     _validate_field_json "$3" "create"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _post "meta/bases/$b/tables/$t/fields" "$3" | jq .
     ;;
 field:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc field:update <base> <table> <field> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh field:update <base> <table> <field> '<json>'" >&2; exit 1; }
     _validate_field_json "$4" "update"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
     _patch "meta/bases/$b/fields/$f" "$4" | jq .
     ;;
 field:delete)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc field:delete <base> <table> <field>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh field:delete <base> <table> <field>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
     _delete "meta/bases/$b/fields/$f" | jq .
     ;;
@@ -401,29 +401,29 @@ field:delete)
 # VIEWS
 #=============================================================================
 view:list)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc view:list <base> <table>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh view:list <base> <table>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _get "meta/bases/$b/tables/$t/views" | jq -r '.list[]|[.title,.type,.id]|@tsv'
     ;;
 view:get)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc view:get <base> <table> <view>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh view:get <base> <table> <view>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _get "meta/bases/$b/views/$v" | jq .
     ;;
 view:create)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc view:create <base> <table> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh view:create <base> <table> '<json>'" >&2; exit 1; }
     _validate_view_json "$3" "create"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _post "meta/bases/$b/tables/$t/views" "$3" | jq .
     ;;
 view:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc view:update <base> <table> <view> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh view:update <base> <table> <view> '<json>'" >&2; exit 1; }
     _validate_view_json "$4" "update"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _patch "meta/bases/$b/views/$v" "$4" | jq .
     ;;
 view:delete)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc view:delete <base> <table> <view>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh view:delete <base> <table> <view>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _delete "meta/bases/$b/views/$v" | jq .
     ;;
@@ -432,29 +432,29 @@ view:delete)
 # VIEW FILTERS
 #=============================================================================
 filter:list)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc filter:list <base> <table> <view>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh filter:list <base> <table> <view>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _get "meta/bases/$b/views/$v/filters" | jq .
     ;;
 filter:create)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc filter:create <base> <table> <view> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh filter:create <base> <table> <view> '<json>'" >&2; exit 1; }
     _validate_filter_json "$4"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _post "meta/bases/$b/views/$v/filters" "$4" | jq .
     ;;
 filter:replace)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc filter:replace <base> <table> <view> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh filter:replace <base> <table> <view> '<json>'" >&2; exit 1; }
     _require_json "json" "$4"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _put "meta/bases/$b/views/$v/filters" "$4" | jq .
     ;;
 filter:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc filter:update <base> <filterId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh filter:update <base> <filterId> '<json>'" >&2; exit 1; }
     _validate_filter_json "$3"
     _patch "meta/bases/$(_base "$1")/filters/$2" "$3" | jq .
     ;;
 filter:delete)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc filter:delete <base> <filterId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh filter:delete <base> <filterId>" >&2; exit 1; }
     _delete "meta/bases/$(_base "$1")/filters/$2" | jq .
     ;;
 
@@ -462,23 +462,23 @@ filter:delete)
 # VIEW SORTS
 #=============================================================================
 sort:list)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc sort:list <base> <table> <view>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh sort:list <base> <table> <view>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _get "meta/bases/$b/views/$v/sorts" | jq .
     ;;
 sort:create)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc sort:create <base> <table> <view> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh sort:create <base> <table> <view> '<json>'" >&2; exit 1; }
     _validate_sort_json "$4"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); v=$(_view "$b" "$t" "$3")
     _post "meta/bases/$b/views/$v/sorts" "$4" | jq .
     ;;
 sort:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc sort:update <base> <sortId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh sort:update <base> <sortId> '<json>'" >&2; exit 1; }
     _validate_sort_json "$3"
     _patch "meta/bases/$(_base "$1")/sorts/$2" "$3" | jq .
     ;;
 sort:delete)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc sort:delete <base> <sortId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh sort:delete <base> <sortId>" >&2; exit 1; }
     _delete "meta/bases/$(_base "$1")/sorts/$2" | jq .
     ;;
 
@@ -486,7 +486,7 @@ sort:delete)
 # RECORDS
 #=============================================================================
 record:list)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc record:list <base> <table> [page] [size] [where] [sort] [fields] [viewId] [nestedPage]" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh record:list <base> <table> [page] [size] [where] [sort] [fields] [viewId] [nestedPage]" >&2; exit 1; }
     _require_int "page" "${3:-}"
     _require_int "size" "${4:-}"
     _validate_where "${5:-}"
@@ -502,33 +502,33 @@ record:list)
     _get "data/$b/$t/records?$q" | jq .records
     ;;
 record:get)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc record:get <base> <table> <id> [fields]" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh record:get <base> <table> <id> [fields]" >&2; exit 1; }
     _require_nonempty "id" "$3"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     q=""; [[ -n "${4:-}" ]] && q="?fields=$(_enc "$4")"
     _get "data/$b/$t/records/$3$q" | jq .
     ;;
 record:create)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc record:create <base> <table> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh record:create <base> <table> '<json>'" >&2; exit 1; }
     _validate_record_json "$3"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _post "data/$b/$t/records" "$3" | jq .
     ;;
 record:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc record:update <base> <table> <id> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh record:update <base> <table> <id> '<json>'" >&2; exit 1; }
     _require_nonempty "id" "$3"
     _require_json_obj "json" "$4"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _patch "data/$b/$t/records" "[{\"id\":$3,\"fields\":$4}]" | jq '.records[0]'
     ;;
 record:update-many)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc record:update-many <base> <table> '<json-array>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh record:update-many <base> <table> '<json-array>'" >&2; exit 1; }
     _require_json_arr "json" "$3"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     _patch "data/$b/$t/records" "$3" | jq .
     ;;
 record:delete)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc record:delete <base> <table> <id|json-array>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh record:delete <base> <table> <id|json-array>" >&2; exit 1; }
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     if [[ "$3" =~ ^\[ ]]; then
         # Array format: [{"id":"x"},{"id":"y"}] or ["x","y"]
@@ -547,7 +547,7 @@ record:delete)
     _delete "data/$b/$t/records" "$ids" | jq .
     ;;
 record:count)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc record:count <base> <table> [where] [viewId]" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh record:count <base> <table> [where] [viewId]" >&2; exit 1; }
     _validate_where "${3:-}"
     b=$(_base "$1"); t=$(_tbl "$b" "$2")
     q=""; [[ -n "${3:-}" ]] && q="where=$(_enc "$3")"; [[ -n "${4:-}" ]] && q+="${q:+&}viewId=$4"
@@ -558,7 +558,7 @@ record:count)
 # LINKED RECORDS
 #=============================================================================
 link:list)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc link:list <base> <table> <linkField> <recordId> [page] [size] [where] [sort] [fields]" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh link:list <base> <table> <linkField> <recordId> [page] [size] [where] [sort] [fields]" >&2; exit 1; }
     _require_nonempty "recordId" "$4"
     _require_int "page" "${5:-}"
     _require_int "size" "${6:-}"
@@ -572,14 +572,14 @@ link:list)
     _get "data/$b/$t/links/$f/$4?$q" | jq .
     ;;
 link:add)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nc link:add <base> <table> <linkField> <recordId> '<ids-json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nocodb.sh link:add <base> <table> <linkField> <recordId> '<ids-json>'" >&2; exit 1; }
     _require_nonempty "recordId" "$4"
     _validate_link_json "$5"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
     _post "data/$b/$t/links/$f/$4" "$5" | jq .
     ;;
 link:remove)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nc link:remove <base> <table> <linkField> <recordId> '<ids-json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nocodb.sh link:remove <base> <table> <linkField> <recordId> '<ids-json>'" >&2; exit 1; }
     _require_nonempty "recordId" "$4"
     _validate_link_json "$5"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
@@ -590,7 +590,7 @@ link:remove)
 # ATTACHMENTS
 #=============================================================================
 attachment:upload)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nc attachment:upload <base> <table> <recordId> <field> <filepath>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" || -z "${5:-}" ]] && { echo "usage: nocodb.sh attachment:upload <base> <table> <recordId> <field> <filepath>" >&2; exit 1; }
     _require_nonempty "recordId" "$3"
     _require_file "$5"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$4")
@@ -601,7 +601,7 @@ attachment:upload)
 # BUTTON ACTIONS
 #=============================================================================
 action:trigger)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nc action:trigger <base> <table> <buttonField> <recordId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" || -z "${4:-}" ]] && { echo "usage: nocodb.sh action:trigger <base> <table> <buttonField> <recordId>" >&2; exit 1; }
     _require_nonempty "recordId" "$4"
     b=$(_base "$1"); t=$(_tbl "$b" "$2"); f=$(_fld "$b" "$t" "$3")
     _post "data/$b/$t/actions/$f" "{\"recordId\":\"$4\"}" | jq .
@@ -611,26 +611,26 @@ action:trigger)
 # SCRIPTS
 #=============================================================================
 script:list)
-    [[ -z "${1:-}" ]] && { echo "usage: nc script:list <base>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh script:list <base>" >&2; exit 1; }
     _get "meta/bases/$(_base "$1")/scripts" | jq -r '.list[]|[.title,.id]|@tsv'
     ;;
 script:get)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc script:get <base> <scriptId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh script:get <base> <scriptId>" >&2; exit 1; }
     _get "meta/bases/$(_base "$1")/scripts/$2" | jq .
     ;;
 script:create)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc script:create <base> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh script:create <base> '<json>'" >&2; exit 1; }
     _require_json_obj "json" "$2"
     echo "$2" | jq -e '.title' >/dev/null 2>&1 || _err "json must contain 'title' field"
     _post "meta/bases/$(_base "$1")/scripts" "$2" | jq .
     ;;
 script:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc script:update <base> <scriptId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh script:update <base> <scriptId> '<json>'" >&2; exit 1; }
     _require_json_obj "json" "$3"
     _patch "meta/bases/$(_base "$1")/scripts/$2" "$3" | jq .
     ;;
 script:delete)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc script:delete <base> <scriptId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh script:delete <base> <scriptId>" >&2; exit 1; }
     _delete "meta/bases/$(_base "$1")/scripts/$2" | jq .
     ;;
 
@@ -638,40 +638,40 @@ script:delete)
 # TEAMS
 #=============================================================================
 team:list)
-    [[ -z "${1:-}" ]] && { echo "usage: nc team:list <workspace>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh team:list <workspace>" >&2; exit 1; }
     _get "meta/workspaces/$(_ws "$1")/teams" | jq -r '.list[]|[.title,.id]|@tsv'
     ;;
 team:get)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc team:get <workspace> <teamId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh team:get <workspace> <teamId>" >&2; exit 1; }
     _get "meta/workspaces/$(_ws "$1")/teams/$2" | jq .
     ;;
 team:create)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc team:create <workspace> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh team:create <workspace> '<json>'" >&2; exit 1; }
     _require_json_obj "json" "$2"
     echo "$2" | jq -e '.title' >/dev/null 2>&1 || _err "json must contain 'title' field"
     _post "meta/workspaces/$(_ws "$1")/teams" "$2" | jq .
     ;;
 team:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc team:update <workspace> <teamId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh team:update <workspace> <teamId> '<json>'" >&2; exit 1; }
     _require_json_obj "json" "$3"
     _patch "meta/workspaces/$(_ws "$1")/teams/$2" "$3" | jq .
     ;;
 team:delete)
-    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nc team:delete <workspace> <teamId>" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" ]] && { echo "usage: nocodb.sh team:delete <workspace> <teamId>" >&2; exit 1; }
     _delete "meta/workspaces/$(_ws "$1")/teams/$2" | jq .
     ;;
 team:members:add)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc team:members:add <workspace> <teamId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh team:members:add <workspace> <teamId> '<json>'" >&2; exit 1; }
     _validate_members_json "$3"
     _post "meta/workspaces/$(_ws "$1")/teams/$2/members" "$3" | jq .
     ;;
 team:members:update)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc team:members:update <workspace> <teamId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh team:members:update <workspace> <teamId> '<json>'" >&2; exit 1; }
     _require_json "json" "$3"
     _patch "meta/workspaces/$(_ws "$1")/teams/$2/members" "$3" | jq .
     ;;
 team:members:remove)
-    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nc team:members:remove <workspace> <teamId> '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" || -z "${2:-}" || -z "${3:-}" ]] && { echo "usage: nocodb.sh team:members:remove <workspace> <teamId> '<json>'" >&2; exit 1; }
     _require_json "json" "$3"
     _delete "meta/workspaces/$(_ws "$1")/teams/$2/members" "$3" | jq .
     ;;
@@ -683,13 +683,13 @@ token:list)
     _get meta/tokens | jq -r '.list[]|[.title,.id]|@tsv'
     ;;
 token:create)
-    [[ -z "${1:-}" ]] && { echo "usage: nc token:create '<json>'" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh token:create '<json>'" >&2; exit 1; }
     _require_json_obj "json" "$1"
     echo "$1" | jq -e '.title' >/dev/null 2>&1 || _err "json must contain 'title' field"
     _post meta/tokens "$1" | jq .
     ;;
 token:delete)
-    [[ -z "${1:-}" ]] && { echo "usage: nc token:delete <tokenId>" >&2; exit 1; }
+    [[ -z "${1:-}" ]] && { echo "usage: nocodb.sh token:delete <tokenId>" >&2; exit 1; }
     _delete "meta/tokens/$1" | jq .
     ;;
 
@@ -807,7 +807,7 @@ WHEREHELP
 #=============================================================================
 *)
     cat <<'HELP'
-nc - NocoDB v3 CLI (Feature Complete)
+nocodb.sh - NocoDB v3 CLI (Feature Complete)
 
 ARGUMENT ORDER: Commands follow a hierarchical pattern:
   workspace → base → table → view/field → record
@@ -923,33 +923,33 @@ EXAMPLES
   # IDs: w=workspace, p=base, m=table, c=column, vw=view (all lowercase alphanumeric)
 
   # List workspaces, bases, tables (use IDs from output)
-  nc workspace:list                                   # → wabc1234xyz
-  nc base:list wabc1234xyz                            # → pdef5678uvw
-  nc table:list pdef5678uvw                           # → mghi9012rst
-  nc field:list pdef5678uvw mghi9012rst               # → cjkl3456opq
-  nc view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
+  nocodb.sh workspace:list                                   # → wabc1234xyz
+  nocodb.sh base:list wabc1234xyz                            # → pdef5678uvw
+  nocodb.sh table:list pdef5678uvw                           # → mghi9012rst
+  nocodb.sh field:list pdef5678uvw mghi9012rst               # → cjkl3456opq
+  nocodb.sh view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
 
   # Records (BASE_ID TABLE_ID ...)
-  nc record:list pdef5678uvw mghi9012rst 1 50 "(Status,eq,active)"
-  nc record:list pdef5678uvw mghi9012rst 1 50 "" "" "Name,Email" "" 2  # with fields and nestedPage
-  nc record:get pdef5678uvw mghi9012rst 31
-  nc record:create pdef5678uvw mghi9012rst '{"fields":{"Name":"Alice"}}'
-  nc record:update pdef5678uvw mghi9012rst 31 '{"Status":"done"}'
-  nc record:delete pdef5678uvw mghi9012rst 31
+  nocodb.sh record:list pdef5678uvw mghi9012rst 1 50 "(Status,eq,active)"
+  nocodb.sh record:list pdef5678uvw mghi9012rst 1 50 "" "" "Name,Email" "" 2  # with fields and nestedPage
+  nocodb.sh record:get pdef5678uvw mghi9012rst 31
+  nocodb.sh record:create pdef5678uvw mghi9012rst '{"fields":{"Name":"Alice"}}'
+  nocodb.sh record:update pdef5678uvw mghi9012rst 31 '{"Status":"done"}'
+  nocodb.sh record:delete pdef5678uvw mghi9012rst 31
 
   # Linked records (BASE_ID TABLE_ID FIELD_ID RECORD_ID [PAGE] [SIZE] [WHERE] [SORT] [FIELDS])
-  nc link:list pdef5678uvw mghi9012rst cjkl3456opq 31 1 25 "(Status,eq,active)" "-CreatedAt" "Name,Email"
-  nc link:add pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
+  nocodb.sh link:list pdef5678uvw mghi9012rst cjkl3456opq 31 1 25 "(Status,eq,active)" "-CreatedAt" "Name,Email"
+  nocodb.sh link:add pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
 
   # View filters/sorts (BASE_ID TABLE_ID VIEW_ID JSON)
-  nc filter:create pdef5678uvw mghi9012rst vwmno7890abc '{"field_id":"cjkl3456opq","operator":"eq","value":"active"}'
+  nocodb.sh filter:create pdef5678uvw mghi9012rst vwmno7890abc '{"field_id":"cjkl3456opq","operator":"eq","value":"active"}'
 
   # Attachments (BASE_ID TABLE_ID RECORD_ID FIELD_ID FILEPATH)
-  nc attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
+  nocodb.sh attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
 
   # Names also work (resolved to IDs automatically)
-  nc record:list MyBase Users
-  NOCODB_VERBOSE=1 nc field:list MyBase Users   # shows resolved IDs
+  nocodb.sh record:list MyBase Users
+  NOCODB_VERBOSE=1 nocodb.sh field:list MyBase Users   # shows resolved IDs
 HELP
     ;;
 esac
