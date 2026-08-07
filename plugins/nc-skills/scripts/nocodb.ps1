@@ -1,5 +1,5 @@
 ###############################################################################
-# nc - NocoDB v3 CLI (PowerShell)
+# nocodb.ps1 - NocoDB v3 CLI (PowerShell)
 ###############################################################################
 $ErrorActionPreference = "Stop"
 
@@ -804,7 +804,7 @@ COMPLEX EXAMPLES:
     #=========================================================================
     default {
         @"
-nc - NocoDB v3 CLI (PowerShell)
+nocodb.ps1 - NocoDB v3 CLI (PowerShell)
 
 ARGUMENT ORDER: Commands follow a hierarchical pattern:
   workspace -> base -> table -> view/field -> record
@@ -920,22 +920,22 @@ EXAMPLES
   # IDs: w=workspace, p=base, m=table, c=column, vw=view (all lowercase alphanumeric)
 
   # List workspaces, bases, tables (use IDs from output)
-  .\nc.ps1 workspace:list                                   # -> wabc1234xyz
-  .\nc.ps1 base:list wabc1234xyz                            # -> pdef5678uvw
-  .\nc.ps1 table:list pdef5678uvw                           # -> mghi9012rst
-  .\nc.ps1 field:list pdef5678uvw mghi9012rst               # -> cjkl3456opq
-  .\nc.ps1 view:list pdef5678uvw mghi9012rst                # -> vwmno7890abc
+  .\nocodb.ps1 workspace:list                                   # -> wabc1234xyz
+  .\nocodb.ps1 base:list wabc1234xyz                            # -> pdef5678uvw
+  .\nocodb.ps1 table:list pdef5678uvw                           # -> mghi9012rst
+  .\nocodb.ps1 field:list pdef5678uvw mghi9012rst               # -> cjkl3456opq
+  .\nocodb.ps1 view:list pdef5678uvw mghi9012rst                # -> vwmno7890abc
 
   # Records (BASE_ID TABLE_ID ...)
-  .\nc.ps1 record:list pdef5678uvw mghi9012rst 1 50 "(Status,eq,active)"
-  .\nc.ps1 record:get pdef5678uvw mghi9012rst 31
-  .\nc.ps1 record:create pdef5678uvw mghi9012rst '{"fields":{"Name":"Alice"}}'
-  .\nc.ps1 record:update pdef5678uvw mghi9012rst 31 '{"Status":"done"}'
-  .\nc.ps1 record:delete pdef5678uvw mghi9012rst 31
+  .\nocodb.ps1 record:list pdef5678uvw mghi9012rst 1 50 "(Status,eq,active)"
+  .\nocodb.ps1 record:get pdef5678uvw mghi9012rst 31
+  .\nocodb.ps1 record:create pdef5678uvw mghi9012rst '{"fields":{"Name":"Alice"}}'
+  .\nocodb.ps1 record:update pdef5678uvw mghi9012rst 31 '{"Status":"done"}'
+  .\nocodb.ps1 record:delete pdef5678uvw mghi9012rst 31
 
   # Names also work (resolved to IDs automatically)
-  .\nc.ps1 record:list MyBase Users
-  `$env:NOCODB_VERBOSE="1"; .\nc.ps1 field:list MyBase Users   # shows resolved IDs
+  .\nocodb.ps1 record:list MyBase Users
+  `$env:NOCODB_VERBOSE="1"; .\nocodb.ps1 field:list MyBase Users   # shows resolved IDs
 "@
     }
 }

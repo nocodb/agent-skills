@@ -22,6 +22,8 @@ CLI for NocoDB API.
 
 - **Linux / macOS**: `scripts/nocodb.sh` (Bash, requires `curl` and `jq`)
 
+All examples below invoke `scripts/nocodb.sh` (relative to this skill's directory) — there is no standalone `nc` binary, and `nc` must not be used as it is the netcat utility.
+
 ## Plan Requirements
 
 **FREE PLANS:** Base, Table, Field, Record, Link, Attachment APIs, Fiter, Sorts APIs
@@ -51,12 +53,12 @@ You can use **names** (human-readable) or **IDs** (faster, from NocoDB).
 **ID Prefixes:** `w`=workspace, `p`=base, `m`=table, `c`=column, `vw`=view
 
 Examples:
-- Name: `nc record:list MyBase Users`
-- ID: `nc record:list pdef5678uvw mghi9012rst`
+- Name: `scripts/nocodb.sh record:list MyBase Users`
+- ID: `scripts/nocodb.sh record:list pdef5678uvw mghi9012rst`
 
 Set `NOCODB_VERBOSE=1` to see resolved IDs:
 ```bash
-NOCODB_VERBOSE=1 nc field:list MyBase Users
+NOCODB_VERBOSE=1 scripts/nocodb.sh field:list MyBase Users
 # → base: MyBase → pdef5678uvw
 # → table: Users → mghi9012rst
 ```
@@ -65,21 +67,21 @@ NOCODB_VERBOSE=1 nc field:list MyBase Users
 
 ```bash
 # Workspace APIs (Enterprise only)
-nc workspace:list                                   # → wabc1234xyz
+scripts/nocodb.sh workspace:list                                   # → wabc1234xyz
 
 # Free plan APIs
-nc base:list wabc1234xyz                            # → pdef5678uvw
-nc table:list pdef5678uvw                           # → mghi9012rst
-nc field:list pdef5678uvw mghi9012rst               # → cjkl3456opq
-nc record:list pdef5678uvw mghi9012rst
-nc record:get pdef5678uvw mghi9012rst 31
-nc filter:list pdef5678uvw mghi9012rst vwmno7890abc
+scripts/nocodb.sh base:list wabc1234xyz                            # → pdef5678uvw
+scripts/nocodb.sh table:list pdef5678uvw                           # → mghi9012rst
+scripts/nocodb.sh field:list pdef5678uvw mghi9012rst               # → cjkl3456opq
+scripts/nocodb.sh record:list pdef5678uvw mghi9012rst
+scripts/nocodb.sh record:get pdef5678uvw mghi9012rst 31
+scripts/nocodb.sh filter:list pdef5678uvw mghi9012rst vwmno7890abc
 
 # View APIs (Enterprise only: self-hosted or cloud-hosted)
-nc view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
+scripts/nocodb.sh view:list pdef5678uvw mghi9012rst                # → vwmno7890abc
 
 # Filter syntax help
-nc where:help
+scripts/nocodb.sh where:help
 ```
 
 ## Commands
@@ -89,54 +91,54 @@ nc where:help
 **Note:** Workspace APIs and Workspace Collaboration APIs are available only with self-hosted **Enterprise** plans and cloud-hosted **Enterprise** plans.
 
 ```bash
-nc workspace:list                         # → wabc1234xyz
-nc workspace:get wabc1234xyz
-nc workspace:create '{"title":"New Workspace"}'
-nc workspace:update wabc1234xyz '{"title":"Renamed"}'
-nc workspace:delete wabc1234xyz
-nc workspace:members wabc1234xyz
-nc workspace:members:add wabc1234xyz '{"email":"user@example.com","roles":"workspace-creator"}'
-nc workspace:members:update wabc1234xyz '{"email":"user@example.com","roles":"workspace-viewer"}'
-nc workspace:members:remove wabc1234xyz '{"email":"user@example.com"}'
+scripts/nocodb.sh workspace:list                         # → wabc1234xyz
+scripts/nocodb.sh workspace:get wabc1234xyz
+scripts/nocodb.sh workspace:create '{"title":"New Workspace"}'
+scripts/nocodb.sh workspace:update wabc1234xyz '{"title":"Renamed"}'
+scripts/nocodb.sh workspace:delete wabc1234xyz
+scripts/nocodb.sh workspace:members wabc1234xyz
+scripts/nocodb.sh workspace:members:add wabc1234xyz '{"email":"user@example.com","roles":"workspace-creator"}'
+scripts/nocodb.sh workspace:members:update wabc1234xyz '{"email":"user@example.com","roles":"workspace-viewer"}'
+scripts/nocodb.sh workspace:members:remove wabc1234xyz '{"email":"user@example.com"}'
 ```
 
 ### Bases
 
 ```bash
-nc base:list wabc1234xyz                  # → pdef5678uvw
-nc base:get pdef5678uvw
-nc base:create wabc1234xyz '{"title":"New Base"}'
-nc base:update pdef5678uvw '{"title":"Renamed"}'
-nc base:delete pdef5678uvw
+scripts/nocodb.sh base:list wabc1234xyz                  # → pdef5678uvw
+scripts/nocodb.sh base:get pdef5678uvw
+scripts/nocodb.sh base:create wabc1234xyz '{"title":"New Base"}'
+scripts/nocodb.sh base:update pdef5678uvw '{"title":"Renamed"}'
+scripts/nocodb.sh base:delete pdef5678uvw
 ```
 
 **Base Collaboration (Enterprise plans only)**
 
 ```bash
-nc base:members pdef5678uvw
-nc base:members:add pdef5678uvw '{"email":"user@example.com","roles":"base-editor"}'
-nc base:members:update pdef5678uvw '{"email":"user@example.com","roles":"base-viewer"}'
-nc base:members:remove pdef5678uvw '{"email":"user@example.com"}'
+scripts/nocodb.sh base:members pdef5678uvw
+scripts/nocodb.sh base:members:add pdef5678uvw '{"email":"user@example.com","roles":"base-editor"}'
+scripts/nocodb.sh base:members:update pdef5678uvw '{"email":"user@example.com","roles":"base-viewer"}'
+scripts/nocodb.sh base:members:remove pdef5678uvw '{"email":"user@example.com"}'
 ```
 
 ### Tables
 
 ```bash
-nc table:list pdef5678uvw                 # → mghi9012rst
-nc table:get pdef5678uvw mghi9012rst
-nc table:create pdef5678uvw '{"title":"NewTable"}'
-nc table:update pdef5678uvw mghi9012rst '{"title":"Customers"}'
-nc table:delete pdef5678uvw mghi9012rst
+scripts/nocodb.sh table:list pdef5678uvw                 # → mghi9012rst
+scripts/nocodb.sh table:get pdef5678uvw mghi9012rst
+scripts/nocodb.sh table:create pdef5678uvw '{"title":"NewTable"}'
+scripts/nocodb.sh table:update pdef5678uvw mghi9012rst '{"title":"Customers"}'
+scripts/nocodb.sh table:delete pdef5678uvw mghi9012rst
 ```
 
 ### Fields
 
 ```bash
-nc field:list pdef5678uvw mghi9012rst     # → cjkl3456opq
-nc field:get pdef5678uvw mghi9012rst cjkl3456opq
-nc field:create pdef5678uvw mghi9012rst '{"title":"Phone","type":"PhoneNumber"}'
-nc field:update pdef5678uvw mghi9012rst cjkl3456opq '{"title":"Mobile"}'
-nc field:delete pdef5678uvw mghi9012rst cjkl3456opq
+scripts/nocodb.sh field:list pdef5678uvw mghi9012rst     # → cjkl3456opq
+scripts/nocodb.sh field:get pdef5678uvw mghi9012rst cjkl3456opq
+scripts/nocodb.sh field:create pdef5678uvw mghi9012rst '{"title":"Phone","type":"PhoneNumber"}'
+scripts/nocodb.sh field:update pdef5678uvw mghi9012rst cjkl3456opq '{"title":"Mobile"}'
+scripts/nocodb.sh field:delete pdef5678uvw mghi9012rst cjkl3456opq
 ```
 
 Field types: SingleLineText, LongText, Number, Decimal, Currency, Percent, Email, URL, PhoneNumber, Date, DateTime, Time, SingleSelect, MultiSelect, Checkbox, Rating, Attachment, Links, User, JSON, etc.
@@ -146,11 +148,11 @@ Field types: SingleLineText, LongText, Number, Decimal, Currency, Percent, Email
 **Note:** View APIs are available only on self-hosted and cloud-hosted **Enterprise** plans.
 
 ```bash
-nc view:list pdef5678uvw mghi9012rst      # → vwmno7890abc
-nc view:get pdef5678uvw mghi9012rst vwmno7890abc
-nc view:create pdef5678uvw mghi9012rst '{"title":"Active Users","type":"grid"}'
-nc view:update pdef5678uvw mghi9012rst vwmno7890abc '{"title":"Renamed"}'
-nc view:delete pdef5678uvw mghi9012rst vwmno7890abc
+scripts/nocodb.sh view:list pdef5678uvw mghi9012rst      # → vwmno7890abc
+scripts/nocodb.sh view:get pdef5678uvw mghi9012rst vwmno7890abc
+scripts/nocodb.sh view:create pdef5678uvw mghi9012rst '{"title":"Active Users","type":"grid"}'
+scripts/nocodb.sh view:update pdef5678uvw mghi9012rst vwmno7890abc '{"title":"Renamed"}'
+scripts/nocodb.sh view:delete pdef5678uvw mghi9012rst vwmno7890abc
 ```
 
 View types: grid, gallery, kanban, calendar
@@ -158,46 +160,46 @@ View types: grid, gallery, kanban, calendar
 ### Records
 
 ```bash
-nc record:list pdef5678uvw mghi9012rst                # page 1, 25 records
-nc record:list pdef5678uvw mghi9012rst 2 50           # page 2, 50 records
-nc record:list pdef5678uvw mghi9012rst 1 25 "(status,eq,active)"
-nc record:list pdef5678uvw mghi9012rst 1 25 "" '[{"field":"cjkl3456opq","direction":"desc"}]'
+scripts/nocodb.sh record:list pdef5678uvw mghi9012rst                # page 1, 25 records
+scripts/nocodb.sh record:list pdef5678uvw mghi9012rst 2 50           # page 2, 50 records
+scripts/nocodb.sh record:list pdef5678uvw mghi9012rst 1 25 "(status,eq,active)"
+scripts/nocodb.sh record:list pdef5678uvw mghi9012rst 1 25 "" '[{"field":"cjkl3456opq","direction":"desc"}]'
 
-nc record:get pdef5678uvw mghi9012rst 31
-nc record:get pdef5678uvw mghi9012rst 31 "name,email"
+scripts/nocodb.sh record:get pdef5678uvw mghi9012rst 31
+scripts/nocodb.sh record:get pdef5678uvw mghi9012rst 31 "name,email"
 
-nc record:create pdef5678uvw mghi9012rst '{"fields":{"name":"Alice"}}'
-nc record:update pdef5678uvw mghi9012rst 31 '{"status":"active"}'
-nc record:update-many pdef5678uvw mghi9012rst '[{"id":31,"fields":{"status":"done"}}]'
+scripts/nocodb.sh record:create pdef5678uvw mghi9012rst '{"fields":{"name":"Alice"}}'
+scripts/nocodb.sh record:update pdef5678uvw mghi9012rst 31 '{"status":"active"}'
+scripts/nocodb.sh record:update-many pdef5678uvw mghi9012rst '[{"id":31,"fields":{"status":"done"}}]'
 
-nc record:delete pdef5678uvw mghi9012rst 31
-nc record:delete pdef5678uvw mghi9012rst '[31,32]'
+scripts/nocodb.sh record:delete pdef5678uvw mghi9012rst 31
+scripts/nocodb.sh record:delete pdef5678uvw mghi9012rst '[31,32]'
 
-nc record:count pdef5678uvw mghi9012rst
-nc record:count pdef5678uvw mghi9012rst "(status,eq,active)"
+scripts/nocodb.sh record:count pdef5678uvw mghi9012rst
+scripts/nocodb.sh record:count pdef5678uvw mghi9012rst "(status,eq,active)"
 ```
 
 ### Linked Records
 
 ```bash
-nc link:list pdef5678uvw mghi9012rst cjkl3456opq 31
-nc link:add pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
-nc link:remove pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
+scripts/nocodb.sh link:list pdef5678uvw mghi9012rst cjkl3456opq 31
+scripts/nocodb.sh link:add pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
+scripts/nocodb.sh link:remove pdef5678uvw mghi9012rst cjkl3456opq 31 '[{"id":42}]'
 ```
 
 ### Filters & Sorts (View-level)
 
 ```bash
-nc filter:list pdef5678uvw mghi9012rst vwmno7890abc
-nc filter:create pdef5678uvw mghi9012rst vwmno7890abc '{"field_id":"cjkl3456opq","operator":"eq","value":"active"}'
-nc sort:list pdef5678uvw mghi9012rst vwmno7890abc
-nc sort:create pdef5678uvw mghi9012rst vwmno7890abc '{"field_id":"cjkl3456opq","direction":"desc"}'
+scripts/nocodb.sh filter:list pdef5678uvw mghi9012rst vwmno7890abc
+scripts/nocodb.sh filter:create pdef5678uvw mghi9012rst vwmno7890abc '{"field_id":"cjkl3456opq","operator":"eq","value":"active"}'
+scripts/nocodb.sh sort:list pdef5678uvw mghi9012rst vwmno7890abc
+scripts/nocodb.sh sort:create pdef5678uvw mghi9012rst vwmno7890abc '{"field_id":"cjkl3456opq","direction":"desc"}'
 ```
 
 ### Attachments
 
 ```bash
-nc attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
+scripts/nocodb.sh attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
 ```
 
 ### Scripts
@@ -205,8 +207,8 @@ nc attachment:upload pdef5678uvw mghi9012rst 31 cjkl3456opq ./report.pdf
 **Note:** Script APIs are available only on self-hosted and cloud-hosted **Enterprise** plans.
 
 ```bash
-nc script:list pdef5678uvw
-nc script:create pdef5678uvw '{"title":"My Script"}'
+scripts/nocodb.sh script:list pdef5678uvw
+scripts/nocodb.sh script:create pdef5678uvw '{"title":"My Script"}'
 ```
 
 ### Teams
@@ -214,8 +216,8 @@ nc script:create pdef5678uvw '{"title":"My Script"}'
 **Note:** Team APIs require Enterprise plans (workspace teams are Enterprise-only).
 
 ```bash
-nc team:list wabc1234xyz
-nc team:create wabc1234xyz '{"title":"Engineering"}'
+scripts/nocodb.sh team:list wabc1234xyz
+scripts/nocodb.sh team:create wabc1234xyz '{"title":"Engineering"}'
 ```
 
 ### API Tokens
@@ -223,14 +225,14 @@ nc team:create wabc1234xyz '{"title":"Engineering"}'
 **Note:** API Token APIs are available only with self-hosted **Enterprise** plans and cloud-hosted **Enterprise** plans.
 
 ```bash
-nc token:list
-nc token:create '{"title":"CI Token"}'
-nc token:delete tkn1a2b3c4d5e6f7g
+scripts/nocodb.sh token:list
+scripts/nocodb.sh token:create '{"title":"CI Token"}'
+scripts/nocodb.sh token:delete tkn1a2b3c4d5e6f7g
 ```
 
 ## Where Filter Syntax
 
-Run `nc where:help` for full documentation.
+Run `scripts/nocodb.sh where:help` for full documentation.
 
 ### Basic Syntax
 
