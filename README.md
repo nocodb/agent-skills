@@ -16,7 +16,26 @@ You can also install the skills in this repo as Claude Code plugins:
 
 ```
 /plugin marketplace add nocodb/agent-skills
+/plugin install nocodb@nocodb-agent-skills
 ```
+
+## Cursor Plugin
+
+This repo is also a Cursor plugin marketplace (`.cursor-plugin/marketplace.json`). Install **NocoDB** from **Cursor Settings → Plugins**, or run `/add-plugin nocodb` in chat.
+
+## Grok Build Plugin
+
+The same plugin is listed on the [xAI plugin marketplace](https://github.com/xai-org/plugin-marketplace) as **nocodb**, sourced from `plugins/nocodb` in this repo.
+
+## What the plugin contains
+
+`plugins/nocodb/` is one plugin directory read by all three clients:
+
+- `skills/nocodb/` - the NocoDB v3 API skill and its `nocodb.sh` / `nocodb.ps1` scripts
+- `.mcp.json` and `mcp.json` - the hosted NocoDB MCP server (`https://app.nocodb.com/mcp`, OAuth)
+- `.claude-plugin/`, `.cursor-plugin/`, `.grok-plugin/` - per-client manifests
+
+See [`plugins/nocodb/README.md`](plugins/nocodb/README.md) for details.
 
 ## Usage
 
@@ -42,6 +61,8 @@ Each skill follows the [Agent Skills Open Standard](https://agentskills.io):
 
 - `SKILL.md` - Required skill manifest with frontmatter (name, description, metadata)
 - `scripts/` - Executable shell scripts
+
+The root `SKILL.md` and `scripts/` serve `npx skills add`; the same skill lives at `plugins/nocodb/skills/nocodb/` for the plugin clients.
 
 ## License
 

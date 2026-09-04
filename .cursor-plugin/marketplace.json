@@ -1,0 +1,18 @@
+{
+  "name": "nocodb",
+  "owner": {
+    "name": "NocoDB",
+    "email": "cs@nocodb.com"
+  },
+  "metadata": {
+    "description": "NocoDB plugins for Cursor: the NocoDB MCP server plus agent skills for the NocoDB v3 API",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "nocodb",
+      "source": "./plugins/nocodb",
+      "description": "Query, create, and update records in your NocoDB bases."
+    }
+  ]
+}

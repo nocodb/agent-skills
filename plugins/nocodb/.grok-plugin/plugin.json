@@ -1,0 +1,14 @@
+{
+  "name": "nocodb",
+  "version": "1.0.0",
+  "description": "NocoDB integration (MCP Server + Skills). Read, create, update, and delete records in your NocoDB bases through the hosted NocoDB MCP server, and manage workspaces, bases, tables, fields, and views through the NocoDB v3 REST API skill.",
+  "author": {
+    "name": "NocoDB",
+    "url": "https://nocodb.com"
+  },
+  "homepage": "https://nocodb.com",
+  "repository": "https://github.com/nocodb/agent-skills",
+  "license": "MIT",
+  "keywords": ["nocodb", "nocodb mcp", "nocodb base", "nocodb api"],
+  "logo": "assets/logo.svg"
+}
