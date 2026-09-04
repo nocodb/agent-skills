@@ -1,6 +1,6 @@
 # NocoDB
 
-Plugin for Cursor, Grok Build, and Claude Code that connects agents to [NocoDB](https://nocodb.com), the open-source no-code database platform. It bundles two components:
+Plugin for Cursor, Grok Build, and Claude Code that connects agents to [NocoDB](https://nocodb.com), the no-code platform for building databases, interfaces, and automations on top of your data. It bundles two components:
 
 - **NocoDB MCP server** (hosted, OAuth): read, create, update, and delete records in a base you authorize.
 - **`nocodb` skill**: a CLI over the NocoDB v3 REST API for everything the MCP server does not cover: workspaces, bases, tables, fields, views, links, attachments, filters, sorts, and team management.
