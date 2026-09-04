@@ -1,0 +1,14 @@
+{
+  "name": "nocodb",
+  "version": "1.0.0",
+  "description": "Work with your NocoDB bases from Claude Code: the NocoDB MCP server for reading, creating, updating, and deleting records, plus an agent skill for the full NocoDB v3 REST API (workspaces, bases, tables, fields, views, records).",
+  "author": {
+    "name": "NocoDB",
+    "email": "cs@nocodb.com"
+  },
+  "homepage": "https://nocodb.com/docs/product-docs/mcp",
+  "repository": "https://github.com/nocodb/agent-skills",
+  "license": "MIT",
+  "keywords": ["nocodb", "nocodb mcp", "nocodb api", "no-code database"],
+  "mcpServers": "./.mcp.json"
+}

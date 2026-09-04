@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nocodb": {
+      "type": "http",
+      "url": "https://app.nocodb.com/mcp"
+    }
+  }
+}
